@@ -9,8 +9,21 @@ import {
 } from "@chakra-ui/react"
 import { useNavigate } from "react-router"
 
+import { useState } from "react"
+import useAuth from '../../hooks/useAuth';
+
+
 const Login = () => {
     const navigate = useNavigate()
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const { login, loading, error } = useAuth();
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        login(email, password);
+    };
+    
     return (
         <>
             <Flex width="full" align="center" justifyContent="center">
@@ -19,15 +32,17 @@ const Login = () => {
                         <Heading>Iniciar sesión</Heading>
                     </Box>
                     <Box my={4} textAlign="left">
-                    <form>
+                    <form onSubmit={handleSubmit}>
                         <FormControl>
                             <FormLabel>Email</FormLabel>
-                            <Input type="email" placeholder="test@test.com" />
+                            <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="test@test.com" />
                         </FormControl>
                         <FormControl mt={6}>
                             <FormLabel>Password</FormLabel>
-                            <Input type="password" placeholder="*******" />
+                            <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="*******" />
                         </FormControl>
+                        {loading && <p>Loading...</p>}
+                        {error && <p>{error}</p>}
                         <Button width="full" mt={4} type="submit"
                             onClick={() => navigate('/singup')}>
                             INICIAR SESIÓN
