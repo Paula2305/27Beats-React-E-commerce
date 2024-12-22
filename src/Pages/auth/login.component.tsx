@@ -8,8 +8,7 @@ import {
     Button
 } from "@chakra-ui/react"
 import { useNavigate } from "react-router"
-
-import { useState } from "react"
+import { ChangeEvent, useState } from "react" //Importamos ChangeEvent desde react
 import useAuth from '../../hooks/useAuth';
 
 
@@ -19,7 +18,7 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const { login, loading, error } = useAuth();
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: React.FormEvent) => { //Tipamos el evento en handleSubmit
         e.preventDefault();
         login(email, password);
     };
@@ -35,11 +34,11 @@ const Login = () => {
                     <form onSubmit={handleSubmit}>
                         <FormControl>
                             <FormLabel>Email</FormLabel>
-                            <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="test@test.com" />
+                            <Input type="email" value={email} onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)} placeholder="test@test.com" />
                         </FormControl>
                         <FormControl mt={6}>
                             <FormLabel>Password</FormLabel>
-                            <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="*******" />
+                            <Input type="password" value={password} onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)} placeholder="*******" />
                         </FormControl>
                         {loading && <p>Loading...</p>}
                         {error && <p>{error}</p>}
