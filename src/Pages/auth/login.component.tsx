@@ -21,6 +21,7 @@ const Login = () => {
     const handleSubmit = async (e: React.FormEvent) => { //Tipamos el evento en handleSubmit
         e.preventDefault();
         login(email, password);
+        navigate('/');
     };
     
     return (
@@ -42,8 +43,7 @@ const Login = () => {
                         </FormControl>
                         {loading && <p>Loading...</p>}
                         {error && <p>{error}</p>}
-                        <Button width="full" mt={4} type="submit"
-                            onClick={() => navigate('/singup')}>
+                        <Button width="full" mt={4} type="submit">
                             INICIAR SESIÓN
                         </Button>
                     </form>

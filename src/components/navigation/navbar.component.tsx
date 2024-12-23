@@ -48,7 +48,11 @@ import {
             <Text
               textAlign={useBreakpointValue({ base: 'left', md: 'left' })}
               fontFamily={'heading'}
-              color={useColorModeValue('white', 'gray.800')}>
+              color={useColorModeValue('white', 'gray.800')}
+              onClick={() => {
+                console.log('Iniciar Sesión clickeado');
+                navigate('/');
+              }}>
               Logo
             </Text>
           </Flex>
