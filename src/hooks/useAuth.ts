@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import authService from '../services/firebase/auth.service'; //Importamos el authService de Firebase
-import { User } from 'firebase/auth';
+import { onAuthStateChanged, User } from 'firebase/auth';
+import { auth } from '../services/firebase/firebase.config';
 
 type AuthError = string | null;
 
@@ -9,6 +10,22 @@ function useAuth() {
     const [error, setError] = useState<AuthError>(null);
     const [user, setUser] = useState<User | null>(null);
 
+    
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+            if (currentUser) {
+            setUser(currentUser);
+            } else {
+                setUser(null)
+            }
+            setLoading(false);
+        });
+
+        return () => {
+            unsubscribe();
+        };
+    }, [])
+
     const login = async (email: string, password: string) => {
         setLoading(true);
         setError(null);
@@ -16,6 +33,10 @@ function useAuth() {
             const response = await authService.login(email, password);
             if (response.user) {
                 setUser(response.user);
+                console.log("datos")
+                console.log(response.user);
+                console.log("datos user")
+                console.log(user);
               }
         } catch (err: unknown) { // Usamos unknown
             if(err instanceof Error){
@@ -27,6 +48,7 @@ function useAuth() {
             setLoading(false);
         }
     };
+
 
     const register = async (email: string, password: string) => {
         setLoading(true);
@@ -67,7 +89,7 @@ function useAuth() {
     }
 
 
-    return {loading, error, login, register, user, logout}
+    return {loading, error, login, register, user, logout, setUser}
 }
 
 export default useAuth;

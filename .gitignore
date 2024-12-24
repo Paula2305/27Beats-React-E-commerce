@@ -18,7 +18,7 @@ firebase.config.ts
 !.vscode/extensions.json
 .idea
 .DS_Store
-*.suo
+*.suo        
 *.ntvs*
 *.njsproj
 *.sln

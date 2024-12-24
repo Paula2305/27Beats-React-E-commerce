@@ -24,11 +24,23 @@ import {
     ChevronDownIcon
   } from '@chakra-ui/icons'
   import { useNavigate } from "react-router-dom"
+  import useAuth from '../../hooks/useAuth';
+  import authService from '../../services/firebase/auth.service';
   
   export default function Navbar() {
-    const { isOpen, onToggle } = useDisclosure()
-    const navigate = useNavigate()
-  
+    const { isOpen, onToggle } = useDisclosure();
+    const navigate = useNavigate();
+    const { user } = useAuth(); // Usamos el hook useAuth
+
+  const handleSignOut = async () => {
+     await authService.logout(); // Usamos el logout del authService
+   };
+
+
+    const handleLoginClick = async () => {
+      navigate('/login');
+    };
+
     return (
       <Box>
         <Flex
@@ -83,12 +95,9 @@ import {
                     textDecoration: 'none',
                     color: '#05FF0E',
                   }}
-                  onClick={() => {
-                    console.log('Iniciar Sesión clickeado');
-                    navigate('/login');
-                  }}
+                  onClick={user ? handleSignOut : handleLoginClick}
                   >
-                  Iniciar Sesión
+                  {user ? 'Cerrar Sesión' : 'Iniciar Sesión'}
                 </Box>
   
             {/* Icono de Menú Hamburguesa */}
